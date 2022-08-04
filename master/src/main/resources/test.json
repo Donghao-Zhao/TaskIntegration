@@ -1,0 +1,112 @@
+{
+  "projectId": 3,
+  "projectName": "project_C",
+  "dataSources":[
+    {
+      "name" : "hive"
+    },
+    {
+      "url": "dddd",
+      "userName": "dddd",
+      "password": "dddd",
+      "driver": "dddd",
+      "name": "dest"
+    }
+  ],
+  "tasks": [
+    {
+      "taskId": 1,
+      "taskName": "task1",
+      "cron": "0 0 1 * * ?",
+      "steps": [
+        {
+          "order": 1,
+          "stepName": "step1",
+          "type": "hive",
+          "hiveParam": {
+            "var1": "2013"
+          },
+          "path": "/dev/donghao/C3.hql"
+        }
+      ]
+    },
+    {
+      "taskId": 2,
+      "taskName": "task2",
+      "cron": "0 0 1 ? * 1",
+      "steps": [
+        {
+          "stepName": "step1",
+          "type": "hive",
+          "order": 1,
+          "path": "/dev/donghao/C1.hql",
+          "hiveParam":{
+            "var1":"2013",
+            "var2":"2222",
+            "var3":"2022",
+            "var4":"true"
+          }
+        },
+        {
+          "stepName": "step2",
+          "type": "hive",
+          "order": 1,
+          "path": "/dev/donghao/C2.hql"
+        },
+        {
+          "stepName": "step3",
+          "type": "spark",
+          "order": 2,
+          "path": "/dev/donghao/test.jar",
+          "master": "local[*]",
+          "deployMode": "client",
+          "className": "com.donghao.test.SparkHiveExample"
+        },
+        {
+          "stepName": "step4",
+          "type": "hdfs",
+          "order": 3,
+          "mode": "copy2local",
+          "source": "/hive/warehouse/student.csv",
+          "destination": "/dev/donghao"
+        },
+        {
+          "stepName": "step5",
+          "type": "script",
+          "mode": "python3",
+          "order": 4,
+          "path": "/dev/donghao/toModel.py",
+          "param": "2022-07-08"
+        },
+        {
+          "stepName": "step6",
+          "type": "dataLoader",
+          "mode": "hive",
+          "order": 5,
+          "sourceDataSource": "source",
+          "destDataSource": "dest",
+          "sourceTables": ["test.student_final", "test.b"],
+          "destTables": ["mysqlTest.student_final", "mysqlTest.b"]
+        },
+        {
+          "stepName": "step7",
+          "type": "dataLoader",
+          "mode": "csv",
+          "order": 6,
+          "sourcePath": "/dev/donghao",
+          "destDataSource": "dest",
+          "sourceCSV": ["student_final.csv", "b.csv"],
+          "destTables": ["mysqlTest.student_final", "mysqlTest.b"]
+        },
+        {
+          "stepName": "step8",
+          "type": "custom",
+          "order": 7,
+          "path": "/dev/donghao/test.jar",
+          "className": "com.onecareer.of.test.test",
+          "function": "helloWorld"
+        }
+      ]
+    }
+  ]
+}
