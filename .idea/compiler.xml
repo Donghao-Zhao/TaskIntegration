@@ -16,6 +16,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="executor" options="-parameters" />
       <module name="master" options="-parameters" />
       <module name="model" options="-parameters" />
     </option>

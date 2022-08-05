@@ -2,6 +2,7 @@ package usc.donghao.taskintegration;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import usc.donghao.taskintegration.common.utils.ConfigUtil;
+import usc.donghao.taskintegration.executor.service.HiveService;
 import usc.donghao.taskintegration.model.ConfigVO;
 import usc.donghao.taskintegration.model.StepVO;
 import usc.donghao.taskintegration.model.TaskVO;
@@ -20,9 +21,9 @@ import java.util.List;
 public class Application {
 
     @Autowired
-    private JdbcTemplate hiveJdbcTemplate;
-    @Autowired
     private ConfigUtil configUtil;
+    @Autowired
+    private HiveService hiveService;
 
     private static final Logger appLogger = LoggerFactory.getLogger(Application.class);
     public static void main(String[] args) {
@@ -46,9 +47,9 @@ public class Application {
                 String type = stepVO.getType();
                 if (type.equals("hive")) {
                     appLogger.info("Run hive");
-                    appLogger.info("show databases");
-                    hiveJdbcTemplate.execute("show databases");
-                    appLogger.info("done");
+                    hiveService.execute("show databases");
+                    hiveService.execute("select * from employees");
+
                 }
             });
         });
