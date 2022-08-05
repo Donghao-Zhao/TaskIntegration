@@ -47,8 +47,7 @@ public class Application {
                 String type = stepVO.getType();
                 if (type.equals("hive")) {
                     appLogger.info("Run hive");
-                    hiveService.execute("show databases");
-                    hiveService.execute("select * from employees");
+                    hiveService.runHql(stepVO.getPath(),stepVO.getHiveParam());
 
                 }
             });

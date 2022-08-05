@@ -12,7 +12,7 @@ public class StepVO {
     private String mode;
 
     //hive
-    private Map<String, String> hiveParam;
+    private Map<String, Object> hiveParam;
 
     //spark
     private String master;
@@ -77,11 +77,11 @@ public class StepVO {
         this.mode = mode;
     }
 
-    public Map<String, String> getHiveParam() {
+    public Map<String, Object> getHiveParam() {
         return hiveParam;
     }
 
-    public void setHiveParam(Map<String, String> hiveParam) {
+    public void setHiveParam(Map<String, Object> hiveParam) {
         this.hiveParam = hiveParam;
     }
 
