@@ -64,8 +64,10 @@ public class Application {
                 }
             });
             Queue<JobDetail> jobDetailQueue = new LinkedList<>();
+            Map<String,String> statusMap = new HashMap<>();
                 taskVO.getSteps().forEach(stepVO -> {
                 appLogger.info("Get step " + stepVO.getOrder() + "'s Config");
+                statusMap.put(stepVO.getStepName(),"new");
                 String type = stepVO.getType();
                 jobDescriptor.setName(stepVO.getStepName());
                 if (type.equals("hive")) {
@@ -83,23 +85,34 @@ public class Application {
                 jobDetailQueue.add(jobDetail);
 
             });
+                List<String> runningJobList = new ArrayList<>();
                 orderListener.setJobDetailQueue(jobDetailQueue);
+                orderListener.setStatusMap(statusMap);
+                orderListener.setRunningJobList(runningJobList);
 
-            Trigger jobTrigger = TriggerBuilder.newTrigger()
-                    .withIdentity(taskName)
-                    .withSchedule(CronScheduleBuilder.cronSchedule(cron))
-                    .build();
+
             try {
                 scheduler.getListenerManager().addJobListener(orderListener);
-                if(!jobDetailQueue.isEmpty()){
-                    JobDetail initJobDetail = jobDetailQueue.poll();
-                    //scheduler.addJob(initJobDetail,true);
-                    scheduler.scheduleJob(initJobDetail,jobTrigger);
-                }else{
+                if(jobDetailQueue.isEmpty()) {
                     appLogger.warn(taskName + "'s Step List is empty");
+                    return;
+
+                }
+                while(!jobDetailQueue.isEmpty() && jobDetailQueue.peek().getJobDataMap().getString("order").equals("1")){
+                    JobDetail initJobDetail = jobDetailQueue.poll();
+                    String stepName = initJobDetail.getJobDataMap().getString("stepName");
+                    runningJobList.add(stepName);
+                    statusMap.put(stepName,"processing");
+                    appLogger.info(stepName + "is running");
+                    Trigger jobTrigger = TriggerBuilder.newTrigger()
+                            .withIdentity(stepName)
+                            .withSchedule(CronScheduleBuilder.cronSchedule(cron))
+                            .build();
+                    scheduler.scheduleJob(initJobDetail,jobTrigger);
                 }
 
-            } catch (SchedulerException e) {
+
+            } catch (Exception e) {
                 appLogger.error("Error",e);
             }
         });

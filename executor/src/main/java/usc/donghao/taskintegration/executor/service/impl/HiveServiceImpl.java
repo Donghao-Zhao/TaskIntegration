@@ -50,6 +50,7 @@ public class HiveServiceImpl implements HiveService {
     @Override
     public void runHql(String filePath, Map<String, Object> paramMap){
         appLogger.info("Run hive runHql");
+        appLogger.info(filePath);
         HiveScript hiveScript = new HiveScript(new PathResource(filePath),paramMap);
         hiveTemplate.executeScript(hiveScript);
         appLogger.info("HQL run success");
