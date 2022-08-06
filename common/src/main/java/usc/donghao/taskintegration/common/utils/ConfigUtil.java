@@ -1,6 +1,6 @@
 package usc.donghao.taskintegration.common.utils;
 
-import usc.donghao.taskintegration.model.ConfigVO;
+import usc.donghao.taskintegration.model.vo.ConfigVO;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package usc.donghao.taskintegration.model;
+package usc.donghao.taskintegration.model.vo;
 
 import java.util.List;
 
