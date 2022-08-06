@@ -83,6 +83,8 @@ public class Application {
                 jobDetailQueue.add(jobDetail);
 
             });
+                orderListener.setJobDetailQueue(jobDetailQueue);
+
             Trigger jobTrigger = TriggerBuilder.newTrigger()
                     .withIdentity(taskName)
                     .withSchedule(CronScheduleBuilder.cronSchedule(cron))
