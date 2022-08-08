@@ -18,6 +18,7 @@ public class StepVO {
     private String master;
     private String deployMode;
     private String className;
+    private String sparkLogPath;
 
     //hdfs
     private String source;
@@ -187,5 +188,13 @@ public class StepVO {
 
     public void setFunction(String function) {
         this.function = function;
+    }
+
+    public String getSparkLogPath() {
+        return sparkLogPath;
+    }
+
+    public void setSparkLogPath(String sparkLogPath) {
+        this.sparkLogPath = sparkLogPath;
     }
 }

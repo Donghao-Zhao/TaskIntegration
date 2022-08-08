@@ -53,7 +53,7 @@ public class OrderListener extends JobChainingJobListener {
     public void jobWasExecuted(JobExecutionContext jobExecutionContext, JobExecutionException e) {
         JobDetail curJobDetail = jobExecutionContext.getJobDetail();
         String curStepName = curJobDetail.getJobDataMap().getString("stepName");
-
+        if(curStepName == null) return;
         statusMap.put(curStepName, " complete");
         appLogger.info(curStepName + " is done");
         runningJobList.remove(curStepName);

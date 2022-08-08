@@ -100,7 +100,11 @@
             <artifactId>quartz</artifactId>
             <version>2.3.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-launcher_2.13</artifactId>
+            <version>3.3.0</version>
+        </dependency>
 
 
         <dependency>
