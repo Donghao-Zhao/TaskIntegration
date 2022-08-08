@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import usc.donghao.taskintegration.executor.job.HiveJob;
+import usc.donghao.taskintegration.executor.job.ScriptJob;
 import usc.donghao.taskintegration.executor.job.SparkJob;
 import usc.donghao.taskintegration.executor.listener.OrderListener;
 import usc.donghao.taskintegration.model.scheduler.JobDescriptor;
@@ -50,6 +51,11 @@ public class ExecutorJob implements Job {
                 jobDescriptor.setJobClazz(HiveJob.class);
                 paramMap.put("path",stepVO.getPath());
                 paramMap.put("hiveParam",stepVO.getHiveParam());
+            }else if(type.equalsIgnoreCase("script")){
+                jobDescriptor.setJobClazz(ScriptJob.class);
+                paramMap.put("path",stepVO.getPath());
+                paramMap.put("param",stepVO.getParam());
+                paramMap.put("mode",stepVO.getMode());
             }else if(type.equalsIgnoreCase("spark")){
                 jobDescriptor.setJobClazz(SparkJob.class);
                 paramMap.put("path",stepVO.getPath());
