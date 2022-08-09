@@ -4,10 +4,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import usc.donghao.taskintegration.executor.job.HdfsJob;
-import usc.donghao.taskintegration.executor.job.HiveJob;
-import usc.donghao.taskintegration.executor.job.ScriptJob;
-import usc.donghao.taskintegration.executor.job.SparkJob;
+import usc.donghao.taskintegration.executor.job.*;
 import usc.donghao.taskintegration.executor.listener.OrderListener;
 import usc.donghao.taskintegration.model.scheduler.JobDescriptor;
 import usc.donghao.taskintegration.model.vo.StepVO;
@@ -69,6 +66,19 @@ public class ExecutorJob implements Job {
                 paramMap.put("mode",stepVO.getMode());
                 paramMap.put("source",stepVO.getSource());
                 paramMap.put("destination",stepVO.getDestination());
+            }else if (type.equalsIgnoreCase("function")){
+                jobDescriptor.setJobClazz(FuncJob.class);
+                paramMap.put("path",stepVO.getPath());
+                paramMap.put("className",stepVO.getClassName());
+                paramMap.put("methodName",stepVO.getMethodName());
+                Map<String,String> funcParamMap=new HashMap<>();
+                if(stepVO.getFuncParamList()!=null){
+                    stepVO.getFuncParamList().forEach(str->{
+                        String[] tempArr=str.split("=");
+                        funcParamMap.put(tempArr[0],tempArr[1]);
+                    });
+                    paramMap.put("funcParamMap",funcParamMap);
+                }
             }
             jobDescriptor.setDataMap(paramMap);
             JobDetail jobDetail = jobDescriptor.buildJobDetail();

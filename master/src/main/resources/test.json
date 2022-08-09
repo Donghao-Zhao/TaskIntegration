@@ -13,100 +13,13 @@
       "cron": "0 03 21 * * ?",
       "steps": [
         {
-          "order": 1,
-          "stepName": "step1",
-          "type": "hive",
-          "hiveParam": {
-            "var1": "US"
-          },
-          "path": "/home/hadoopuser/test.hql"
-        },
-        {
-          "order": 2,
-          "stepName": "step2",
-          "type": "hive",
-          "hiveParam": {
-            "var1": "UK"
-          },
-          "path": "/home/hadoopuser/test.hql"
-        }
-      ]
-    },
-    {
-      "taskId": 2,
-      "taskName": "task2",
-      "cron": "0 0 1 ? * 1",
-      "steps": [
-        {
-          "stepName": "step1",
-          "type": "hive",
-          "order": 1,
-          "path": "/home/hadoopuser/test.hql",
-          "hiveParam":{
-            "var1":"2013",
-            "var2":"2222",
-            "var3":"2022",
-            "var4":"true"
-          }
-        },
-        {
-          "stepName": "step2",
-          "type": "hive",
-          "order": 1,
-          "path": "/home/hadoopuser/test.hql"
-        },
-        {
-          "stepName": "step3",
-          "type": "spark",
-          "order": 2,
-          "path": "/home/hadoopuser/test.jar",
-          "master": "local[*]",
-          "deployMode": "client",
-          "className": "com.donghao.test.SparkHiveExample"
-        },
-        {
-          "stepName": "step4",
-          "type": "hdfs",
-          "order": 3,
-          "mode": "copy2local",
-          "source": "/hive/warehouse/student.csv",
-          "destination": "/dev/donghao"
-        },
-        {
-          "stepName": "step5",
-          "type": "script",
-          "mode": "python3",
-          "order": 4,
-          "path": "/home/hadoopuser/toModel.py",
-          "param": "2022-07-08"
-        },
-        {
-          "stepName": "step6",
-          "type": "dataLoader",
-          "mode": "hive",
-          "order": 5,
-          "sourceDataSource": "source",
-          "destDataSource": "dest",
-          "sourceTables": ["test.student_final", "test.b"],
-          "destTables": ["mysqlTest.student_final", "mysqlTest.b"]
-        },
-        {
-          "stepName": "step7",
-          "type": "dataLoader",
-          "mode": "csv",
-          "order": 6,
-          "sourcePath": "/home/hadoopuser",
-          "destDataSource": "dest",
-          "sourceCSV": ["student_final.csv", "b.csv"],
-          "destTables": ["mysqlTest.student_final", "mysqlTest.b"]
-        },
-        {
-          "stepName": "step8",
-          "type": "custom",
-          "order": 7,
-          "path": "/home/hadoopuser/test.jar",
-          "className": "com.onecareer.of.test.test",
-          "function": "helloWorld"
+          "order":1,
+          "stepName":"step1",
+          "type":"function",
+          "path": "C:\\Personal_file\\OneCareer\\Course\\SDE\\functions\\target\\functions-1.0-SNAPSHOT.jar",
+          "className":"usc.donghao.taskintegration.functions.CustomFunc",
+          "methodName": "add",
+          "funcParamList": ["a=1","b=2"]
         }
       ]
     }
