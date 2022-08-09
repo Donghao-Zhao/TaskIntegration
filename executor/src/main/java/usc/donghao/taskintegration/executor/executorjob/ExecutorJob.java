@@ -4,6 +4,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import usc.donghao.taskintegration.executor.job.HdfsJob;
 import usc.donghao.taskintegration.executor.job.HiveJob;
 import usc.donghao.taskintegration.executor.job.ScriptJob;
 import usc.donghao.taskintegration.executor.job.SparkJob;
@@ -47,7 +48,7 @@ public class ExecutorJob implements Job {
             paramMap.put("order",stepVO.getOrder());
             paramMap.put("stepName",stepVO.getStepName());
             jobDescriptor.setName(stepVO.getStepName());
-            if (type.equals("hive")) {
+            if (type.equalsIgnoreCase("hive")) {
                 jobDescriptor.setJobClazz(HiveJob.class);
                 paramMap.put("path",stepVO.getPath());
                 paramMap.put("hiveParam",stepVO.getHiveParam());
@@ -63,6 +64,11 @@ public class ExecutorJob implements Job {
                 paramMap.put("deployMode",stepVO.getDeployMode());
                 paramMap.put("className",stepVO.getClassName());
                 paramMap.put("sparkLogPath",stepVO.getSparkLogPath());
+            }else if (type.equalsIgnoreCase("HDFS")){
+                jobDescriptor.setJobClazz(HdfsJob.class);
+                paramMap.put("mode",stepVO.getMode());
+                paramMap.put("source",stepVO.getSource());
+                paramMap.put("destination",stepVO.getDestination());
             }
             jobDescriptor.setDataMap(paramMap);
             JobDetail jobDetail = jobDescriptor.buildJobDetail();
