@@ -4,22 +4,30 @@
   "dataSources":[
     {
       "name" : "hive"
+    },
+    {
+      "url": "jdbc:mysql://localhost:3306/test",
+      "userName": "root",
+      "password": "df19970420",
+      "driver": "com.mysql.jdbc.Driver",
+      "name": "mysql"
     }
   ],
   "tasks": [
     {
       "taskId": 1,
       "taskName": "task1",
-      "cron": "0 03 21 * * ?",
+      "cron": "0 48 11 * * ?",
+      "group": "testPipeline",
       "steps": [
         {
-          "order":1,
-          "stepName":"step1",
-          "type":"function",
-          "path": "C:\\Personal_file\\OneCareer\\Course\\SDE\\functions\\target\\functions-1.0-SNAPSHOT.jar",
-          "className":"usc.donghao.taskintegration.functions.CustomFunc",
-          "methodName": "add",
-          "funcParamList": ["a=1","b=2"]
+          "order": 1,
+          "stepName": "step1",
+          "type": "dataloader",
+          "sourceDataSource":"hive",
+          "destDataSource":"mysql",
+          "sourceTables":["test.employees"],
+          "destTables":["test.employees"]
         }
       ]
     }
